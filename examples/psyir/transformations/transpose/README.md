@@ -4,7 +4,7 @@ This example demonstrates use of the `LoopTiling2DTrans` and `OMPLoopTrans` tran
 
 Given `trans.f90` containing the loop
 
-```
+```f90
 ! Matrix transpose loop
 do y = 1, dim_y
   do x = 1, dim_x
@@ -15,7 +15,7 @@ end do
 
 the PSyclone script `omp-tile.py` produces code containing the loop:
 
-```
+```f90
 !$omp parallel do collapse(2) default(shared), private(x,x_out_var,y,y_out_var), schedule(auto)
 do y_out_var = 1, dim_y, 32
   do x_out_var = 1, dim_x, 32

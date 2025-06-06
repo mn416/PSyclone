@@ -4,7 +4,7 @@ This example demonstrates use of the `LoopTiling2DTrans`, `ChunkLoopTrans`, `Loo
 
 Given `matmul.f90` containing the loop
 
-```
+```f90
 ! Matrix multiply loop
 do y = 1, m
   do x = 1, p
@@ -17,7 +17,7 @@ end do
 
 the PSyclone script `omp-tile-reorder.py` produces code containing the loop:
 
-```
+```f90
 !$omp parallel do collapse(2) default(shared), private(k,k_out_var,x,x_out_var,y,y_out_var), schedule(auto)
 do y_out_var = 1, m, 8
   do x_out_var = 1, p, 8
