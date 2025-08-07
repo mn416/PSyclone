@@ -106,6 +106,9 @@ class Loop(Statement):
         # if this loop is run concurrently. Alternatively this could be
         # implemented by moving the symbols to the loop_body symbol table.
         self._explicitly_private_symbols = set()
+        # Hold the set of (reduction_operator, variable_name) pairs
+        # for reduction if the loop is run concurrently.
+        self._inferred_reduction_pairs = set()
 
     def __eq__(self, other):
         '''
@@ -134,6 +137,15 @@ class Loop(Statement):
         :rtype: Set[:py:class:`psyclone.psyir.symbols.DataSymbol`]
         '''
         return self._explicitly_private_symbols
+
+    @property
+    def inferred_reduction_pairs(self):
+        '''
+        :returns: the set of (reduction_operator, variable_name) pairs
+            for reduction if the loop is executed concurrently.
+        :rtype: Set[(str, str)]
+        '''
+        return self._inferred_reduction_pairs
 
     @property
     def loop_type(self):
@@ -464,6 +476,10 @@ class Loop(Statement):
                     self._explicitly_private_symbols.add(new_sym)
                 except KeyError:
                     pass
+
+        # TODO [mn416]: anything to do for self._inferred_reduction_pairs
+        # here? Probably yes...
+
         super().replace_symbols_using(table_or_symbol)
 
     def __str__(self):
